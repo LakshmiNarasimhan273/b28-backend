@@ -15,6 +15,23 @@ const allTasks = async (req, res) => {
     }
 };
 
+// Get by id
+const gettaskbyId = async (req, res) => {
+    try{
+        const task = await taskModel.findOne({
+            _id: req.params.id,
+            user: req.userId
+        });
+
+        if(!task){
+            return res.status(401).json({message: "Access Denied"});
+        }
+        res.status(200).json(task);
+    }catch(err){
+        res.status(500).json({message: "Task Fetching failed"})
+    }
+}
+
 // POST api
 const createTask = async (req, res) => {
     try {
@@ -84,4 +101,4 @@ const deleteTask = async (req, res) => {
     }
 };
 
-module.exports = { allTasks, createTask, updateTask, deleteTask }
+module.exports = { allTasks, gettaskbyId, createTask, updateTask, deleteTask }
